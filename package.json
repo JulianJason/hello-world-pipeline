@@ -1,0 +1,15 @@
+{
+  "name": "hello-world-pipeline",
+  "version": "0.0.1",
+  "description": "A simple application to log hello-world to stdout",
+  "main": "src/hello-world.js",
+  "scripts": {
+    "start": "node src/hello-world.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JulianJason",
+  "license": "ISC",
+  "dependencies": {
+    "left-pad": "^1.3.0"
+  }
+}
