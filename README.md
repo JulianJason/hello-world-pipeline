@@ -6,6 +6,12 @@ A very simple repository to showcase simple Github Actions.
 
 - Node
 
+### Running locally
+
+To run locally, use
+
+`node src/hello-world.js`
+
 ### Building the Docker image
 
 To build, run the command

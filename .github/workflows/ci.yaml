@@ -34,11 +34,15 @@ jobs:
       - name: Run code to output to stdout
         run: npm start
 
+      - name: pack npm to an archive
+        run: npm pack
+
+        # 4e Publish artifact - I am a bit unsure because I did not compile here, I just upload as is
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: "hello-world-artifact"
-          path: src
+          path: '*.tgz'
           retention-days: 7
           if-no-files-found: error
 
