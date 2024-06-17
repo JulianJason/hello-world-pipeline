@@ -81,6 +81,7 @@ jobs:
   # Note: I am unsure if I should upload the artifacts to github pipelines or github npm registry -- so here's both 
   publish-to-github-registry:
     needs: [ build-run ]
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
