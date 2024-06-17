@@ -1,5 +1,5 @@
 {
-  "name": "hello-world-pipeline",
+  "name": "@julianjason/hello-world-pipeline",
   "version": "0.1.0",
   "description": "A simple application to log hello-world to stdout",
   "main": "src/hello-world.js",
@@ -10,6 +10,13 @@
   "files": [
     "src"
   ],
+  "publishConfig": {
+    "@julianjason:registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JulianJason/hello-world-pipeline.git"
+  },
   "author": "JulianJason",
   "license": "ISC",
   "dependencies": {
