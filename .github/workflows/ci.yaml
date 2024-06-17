@@ -60,11 +60,14 @@ jobs:
         uses: aquasecurity/trivy-action@0.20.0
         with:
           image-ref: 'docker.io/julianjason/hello-world-pipeline:${{ github.sha }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
 
         # 6c Run the docker image in the pipeline
       - name: Test run container in pipeline
