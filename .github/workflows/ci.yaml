@@ -45,7 +45,7 @@ jobs:
           path: '*.tgz'
           retention-days: 7
           if-no-files-found: error
-
+          
   containerize:
     needs: [ build-run ]
     runs-on: ubuntu-latest
@@ -77,3 +77,31 @@ jobs:
       - name: Test run container in pipeline
         run: |
           docker run docker.io/julianjason/hello-world-pipeline:${{ github.sha }}
+
+  # Note: I am unsure if I should upload the artifacts to github pipelines or github npm registry -- so here's both 
+  publish-to-github-registry:
+    needs: [ build-run ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://npm.pkg.github.com/
+      
+      - name: Install dependencies
+        run: npm ci
+  
+      - name: Publish to github npm registry
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
