@@ -37,14 +37,34 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "hello-world- ${{ github.ref }}-artifact"
+          name: "hello-world-${{ github.ref }}-artifact"
           path: src
           retention-days: 7
           if-no-files-found: error
 
   containerize:
+    # needs: [ build-run ]
     runs-on: ubuntu-latest
     steps:
         # 4a checkout source code
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t docker.io/julianjason/hello-world-pipeline:${{ github.sha }} .
+
+        # https://github.com/marketplace/actions/aqua-security-trivy
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: 'docker.io/julianjason/hello-world-pipeline:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Test run container in pipeline
+        run: |
+          docker run docker.io/julianjason/hello-world-pipeline:${{ github.sha }}
