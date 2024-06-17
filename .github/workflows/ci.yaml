@@ -26,6 +26,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-        # 4c compile/build - not applciable because its just a node script
+        # 4c compile/build - not applicable because its just a node script
       - name: Build project
         run: npm run build --if-present
+        
+        # 4d Run code in github pipeline -- should I write a jest test instead here?
+      - name: Run code to output to stdout
+        run: npm start
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello-world-${GITHUB_REF##*/}-artifact
+          path: src
+          retention-days: 7
+          if-no-files-found: error
