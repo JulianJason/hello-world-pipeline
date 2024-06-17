@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  lint:
+  build-run:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,7 +37,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hello-world-${GITHUB_REF##*/}-artifact
+          name: "hello-world- ${{ github.ref }}-artifact"
           path: src
           retention-days: 7
           if-no-files-found: error
+
+  containerize:
+    runs-on: ubuntu-latest
+    steps:
+        # 4a checkout source code
+      - name: Checkout repository
+        uses: actions/checkout@v4
